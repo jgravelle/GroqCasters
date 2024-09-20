@@ -2,6 +2,9 @@
 
 GroqCasters is a Python application that generates podcast scripts and corresponding audio using AI technologies. It leverages PocketGroq for script generation and Bark for text-to-speech conversion, allowing for custom voice cloning.
 
+![image](https://github.com/user-attachments/assets/da5b4697-5324-47b6-8958-e98a1185f3da)
+
+
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#usage)
@@ -132,3 +135,5 @@ This project is licensed under the MIT License. When using any of Gravelle's cod
 ## Support
 
 For issues and feature requests, please [open an issue](https://github.com/yourusername/groqcasters/issues) on the GitHub repository.
+
+![image](https://github.com/user-attachments/assets/88bf1801-134e-4479-8314-102ff418ddf4)
