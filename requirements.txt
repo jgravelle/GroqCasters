@@ -1,0 +1,8 @@
+pocketgroq==0.3.0
+bark==0.1.5
+torch==1.13.1
+numpy==1.22.0
+scipy==1.7.3
+transformers==4.28.1
+soundfile==0.10.3.post1
+librosa==0.9.1
