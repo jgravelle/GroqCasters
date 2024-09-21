@@ -104,6 +104,79 @@ See the `requirements.txt` file for a full list of dependencies. Key dependencie
 - numpy
 - scipy
 
+## Extending GroqCasters for Multiple Characters
+
+GroqCasters is initially designed for two characters, but you can extend it to support more. Here's a guide on how to modify the application for multiple characters:
+
+1. Update the `config.py` file:
+   - Extend the `HOST_PROFILES` to include additional characters:
+     ```python
+     HOST_PROFILES = """
+     Host1 (Rachel): Enthusiastic, prone to personal anecdotes.
+     Host2 (Mike): More analytical, enjoys making pop culture references.
+     Host3 (Alex): Tech-savvy, often explains complex concepts.
+     Host4 (Sarah): Creative, brings in artistic perspectives.
+     """
+     ```
+
+2. Modify the `groqcasters.py` file:
+   - Add voice presets for new characters:
+     ```python
+     VOICE_PRESETS = {
+         "rachel": "v2/en_speaker_9",
+         "mike": "v2/en_speaker_6",
+         "alex": "v2/en_speaker_2",
+         "sarah": "v2/en_speaker_4"
+     }
+     ```
+   - Update the `_create_voice_prompt` method to handle multiple custom voices:
+     ```python
+     def __init__(self):
+         # ... existing code ...
+         self.custom_voices = {
+             "rachel": self._create_voice_prompt("path/to/rachel_voice.wav"),
+             "mike": self._create_voice_prompt("path/to/mike_voice.wav"),
+             "alex": self._create_voice_prompt("path/to/alex_voice.wav"),
+             "sarah": self._create_voice_prompt("path/to/sarah_voice.wav")
+         }
+     ```
+   - Modify the `generate_audio_from_script` method to use the new voice selection:
+     ```python
+     def generate_audio_from_script(self, script, output_dir):
+         lines = script.split('\n')
+         audio_segments = []
+         
+         for line in lines:
+             if line.strip():
+                 speaker, text = line.split(':', 1)
+                 speaker = speaker.strip().lower()
+                 text = text.strip()
+                 
+                 voice = self.custom_voices.get(speaker) or VOICE_PRESETS.get(speaker, VOICE_PRESETS["rachel"])
+                 
+                 try:
+                     # ... existing audio generation code ...
+                 except Exception as e:
+                     print(f"Error generating audio for line: {line}")
+                     print(f"Error details: {e}")
+         
+         # ... rest of the method remains the same ...
+     ```
+
+3. Update the script generation prompts:
+   - Modify the `OUTLINE_PROMPT_TEMPLATE`, `EXPAND_PROMPT_TEMPLATE`, and `DIALOGUE_PROMPT_TEMPLATE` in `config.py` to include instructions for handling multiple characters.
+
+4. Adjust the script parsing:
+   - If your input scripts have a specific format for multiple speakers, update the script parsing logic in `generate_audio_from_script` to handle this format correctly.
+
+5. Test thoroughly:
+   - Create test scripts with multiple characters to ensure the system handles them correctly.
+   - Generate audio for these test scripts and verify that each character has the correct voice.
+
+Remember to update any other parts of the code that might assume a two-character setup, such as any hardcoded references to "Rachel" or "Mike".
+
+By following these steps, you can extend GroqCasters to support as many characters as you need. This allows for creating more diverse and dynamic podcast scripts with a wider range of voices and personalities.
+
 ## Additional Resources
 
 - [Bark GitHub Repository](https://github.com/suno-ai/bark)
